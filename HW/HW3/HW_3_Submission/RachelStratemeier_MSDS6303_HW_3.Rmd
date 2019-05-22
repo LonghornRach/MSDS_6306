@@ -1,0 +1,75 @@
+---
+title: "RachelStratemeier_MSDS6306_HW_3"
+author: "Rachel Stratemeier"
+date: "5/21/2019"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r session}
+sessionInfo()
+```
+
+
+# Q1. Github Cloning
+```{bash cloning}
+# cd school/repos
+# mkdir awesome_public_datasets
+# git clone https://github.com/caesar0301/awesome-public-datasets awesome_public_datasets/
+```
+
+# Q2. Data Summary
+
+```{r data_summary}
+setwd("C://Users//rachel//school//repos//awesome_public_datasets//Datasets")
+df <- read.csv("titanic.csv/titanic.csv")
+summary(df$Sex)
+barplot(summary(df$Sex), main = "Gender on Titanic", xlab = "Gender", ylab = "Count", ylim = c(0,700))
+df2 = data.frame(df$Age, df$Fare, df$Survived)
+sapply(df2, mean, na.rm = T)
+```
+
+# Q3. Function Building
+```{r function}
+path <- "C://Users//rachel//School//repos//MSDS_6306//HW//HW3//sleep_data_01.csv"
+report <- function(file) {
+  df <- read.csv(file)
+  med <- median(df$Age, na.rm = T)
+  min <- min(df$Duration, na.rm = T)
+  max <- max(df$Duration, na.rm = T)
+  m_rses <- mean(df$RSES, na.rm = T)
+  sd_rses <- sd(df$RSES, na.rm = T)
+  report <- data.frame(med, m_rses/5, sd_rses/5, max-min)
+  names(report) <- c("MedianAge", "SelfEsteem", "SE_SD", "DurationRange")
+  sapply(report, round, 2)
+}
+report(path)
+```
+
+# Q4. FiveThirtyEight Data
+```{r 538}
+library("fivethirtyeight")
+df <- college_recent_grads
+vignette("fivethirtyeight", package = "fivethirtyeight")
+article <- "The Economic Guide to Picking a College Major"
+# url: http://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/
+dim(df)
+names(df)
+```
+
+# Q5. Data Summary
+```{r summary}
+names(df)
+ncol(df)
+major_count <- table(df$major_category)
+par(las=2)
+barplot(major_count, main = "Majors of Recent College Graduates", horiz = T, ylab = "Majors", xlab = "Frequency", col = "blue")
+write.csv(df,file = "recent_college_grads.csv", row.names = F)
+```
+
+# Q6. Codebook
+Github repository: https://github.com/LonghornRach/MSDS_6306
